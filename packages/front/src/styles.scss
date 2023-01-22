@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.card {
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  min-width: 25vw;
+  min-height: 10vh;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+
+  margin-bottom: 10vh;
+}
+
+.card-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.card-header p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.strava-button {
+  background-color: #fc4c02;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 1px;
+  font-size: 16px;
+  cursor: pointer;
+}
