@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "serverless": "^3.26.0"
   },
   "devDependencies": {
     "typescript": "^4.9.4"

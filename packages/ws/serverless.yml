@@ -1,0 +1,18 @@
+service: peba-run-ws
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  hello:
+    handler: lambda/authorize.handle
+    events:
+      - http:
+          path: strava-auth-user
+          method: post
+
+plugins:
+  - serverless-offline
+  - serverless-esbuild
