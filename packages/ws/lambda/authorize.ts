@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Athlete } from '../src/model/athlete';
+import { AthleteRepository } from '../src/repo/athelete-repo';
 require('dotenv').config()
 
 export async function handle(event) {
@@ -14,11 +16,25 @@ export async function handle(event) {
   try{
     const tokenData = await authUser(body.code);
 
+
+    const athleteRepo = new AthleteRepository();
+    const athlete = await athleteRepo.get(tokenData.data.athlete.id);
+    const response: Athlete[] = [];
+    if(!athlete){
+      const newAthlete = {
+        id: tokenData.data.athlete.id,
+        name: tokenData.data.athlete.firstname + ' ' + tokenData.data.athlete.lastname,
+        strava: tokenData.data,
+      }
+
+      response.push(await athleteRepo.insert(newAthlete));
+    }
+
     return {
       statusCode:201,
       body:JSON.stringify(
         {
-          message: `hello, i get the token ${tokenData}`
+          message: `hello, i create a new athlete ${JSON.stringify(response)}`
         }
       )
     };
