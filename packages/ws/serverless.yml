@@ -12,6 +12,11 @@ plugins:
   - serverless-offline
   - serverless-esbuild
   - serverless-iam-roles-per-function
+  - serverless-plugin-monorepo
+
+package:
+  patterns:
+  - 'node_modules/**'
 
 functions:
   auth-user:
