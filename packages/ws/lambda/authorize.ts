@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { Athlete } from '../src/model/athlete';
 import { AthleteRepository } from '../src/repo/athelete-repo';
-require('dotenv').config()
+import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from "aws-lambda"
 
-export async function handle(event) {
-  const body = JSON.parse(event.body);
 
-  if(!body.code) return {
+require('dotenv').config();
+
+export async function handle(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+  const body = JSON.parse(event.body || '{}');
+
+  if(!body?.code) return {
     statusCode: 400,
     body: JSON.stringify({
       message: 'no code',
@@ -20,7 +23,7 @@ export async function handle(event) {
     const athleteRepo = new AthleteRepository();
     const athlete = await athleteRepo.get(tokenData.data.athlete.id);
     const response: Athlete[] = [];
-    if(!athlete){
+    if(!athlete || !athlete.id){
       const newAthlete = {
         id: tokenData.data.athlete.id,
         name: tokenData.data.athlete.firstname + ' ' + tokenData.data.athlete.lastname,
@@ -32,13 +35,9 @@ export async function handle(event) {
 
     return {
       statusCode:201,
-      body:JSON.stringify(
-        {
-          message: `hello, i create a new athlete ${JSON.stringify(response)}`
-        }
-      )
+      body: JSON.stringify(athlete?.strava?.athlete)
     };
-  }catch(e){
+  }catch(e){  
     console.log(e.stack);
     return {
       statusCode: 500,
