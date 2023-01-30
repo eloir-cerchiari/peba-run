@@ -13,7 +13,7 @@ plugins:
   - serverless-esbuild
   - serverless-iam-roles-per-function
   - serverless-plugin-monorepo
-
+  - serverless-ssm-fetch
 package:
   patterns:
   - 'node_modules/**'
@@ -32,6 +32,16 @@ functions:
           - "dynamodb:GetItem"
         Resource:
           - !GetAtt AthleteTable.Arn
+
+    ssmToEnvironment:
+      - STRAVA_CLIENT_ID
+      - STRAVA_CLIENT_SECRET
+
+custom:
+  serverlessSsmFetch:
+    STRAVA_CLIENT_ID: /pebarun/dev/STRAVA_CLIENT_ID~true
+    STRAVA_CLIENT_SECRET: /pebarun/dev/STRAVA_CLIENT_SECRET~true
+
 
 resources:
   Resources:
