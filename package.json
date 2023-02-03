@@ -6,7 +6,6 @@
   "workspaces": [
     "packages/*"
   ],
-  
   "devDependencies": {
     "typescript": "^4.9.4"
   },
@@ -27,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/eloir-cerchiari/peba-run/issues"
   },
-  "homepage": "https://github.com/eloir-cerchiari/peba-run#readme"
+  "homepage": "https://github.com/eloir-cerchiari/peba-run#readme",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0"
+  }
 }

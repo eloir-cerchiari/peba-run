@@ -6,6 +6,7 @@ import {
   Context,
   APIGatewayProxyResult,
 } from 'aws-lambda';
+import { makeGenerateJwtUseCase } from '../src/usecase/generate-jwt-usecase';
 
 require('dotenv').config();
 
@@ -47,6 +48,7 @@ export async function handle(
       body:  JSON.stringify({
         att: athlete?.strava?.athlete,
         created: athlete,
+        token: makeGenerateJwtUseCase().execute(athlete?.id || ''),
       }),
     };
   } catch (e) {
