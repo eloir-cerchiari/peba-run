@@ -33,13 +33,16 @@ export async function handle(
     }
     
     const loginUserOnStrava = makeLoginUserOnStravaUseCase();
+    const loginResponse = await loginUserOnStrava.execute(body.code)
 
-    return {
+    const response = {
       statusCode: 201,
       body:  JSON.stringify(
-        loginUserOnStrava.execute(body.code)
+        loginResponse
       )
     };
+    console.log(response);
+    return response;
   } catch (e) {
     if(e instanceof DefaultError){
       return e.response();
@@ -52,18 +55,3 @@ export async function handle(
     };
   }
 }
-
-const authUser = async (code) => {
-  const url = 'https://www.strava.com/api/v3/oauth/token';
-
-  const data = {
-    client_id: process.env.STRAVA_CLIENT_ID,
-    client_secret: process.env.STRAVA_CLIENT_SECRET,
-    code: code,
-    grant_type: 'authorization_code',
-  };
-
-  const result = await axios.post(url, data);
-
-  return result;
-};

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -9,11 +10,13 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class LoggedComponent implements OnInit {
 
   public queryStringParams: Params = {};
+  public athlete: any;
 
   constructor(
 
     private route: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
 
   ) { }
 
@@ -32,6 +35,13 @@ export class LoggedComponent implements OnInit {
       if (params?.['error'] && params?.['error'] === 'access_denied') {
         return this.accessDenied();
       }
+      this.loginOnWS();
+    });
+  }
+
+  private loginOnWS(){
+    this.http.post('http://localhost:3000/auth-user', this.queryStringParams).subscribe((res) => {
+      this.athlete = res;
     });
   }
 

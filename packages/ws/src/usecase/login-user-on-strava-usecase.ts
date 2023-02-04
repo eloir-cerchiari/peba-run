@@ -61,11 +61,11 @@ export class LoginUserOnStravaUseCase extends GenericUseCase {
       const token = await this.generateJwtUseCase.execute(
         `${stravaAuthResult.athlete.id}`
       );
-
-      return {
+      const response =  {
         athlete:  stravaAuthResult.athlete,
         token: token,
       }
+      return response;
 
     } catch (e) {
       if (e instanceof UseCaseError) throw e;
