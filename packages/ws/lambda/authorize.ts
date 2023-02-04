@@ -7,56 +7,47 @@ import {
   APIGatewayProxyResult,
 } from 'aws-lambda';
 import { makeGenerateJwtUseCase } from '../src/usecase/generate-jwt-usecase';
+import { DefaultError } from '../src/error/default-error';
+import { makeLoginUserOnStravaUseCase } from '../src/usecase/login-user-on-strava-usecase';
+import { ErrorCode } from '../src/error/error-code';
 
 require('dotenv').config();
 
 export async function handle(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  const body = JSON.parse(event.body || '{}');
-
-  if (!body?.code)
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        message: 'no code',
-      }),
-    };
-
+  
+  
   try {
-    const tokenData = await authUser(body.code);
-
-    const athleteRepo = new AthleteRepository();
-    const athlete = await athleteRepo.get(tokenData.data.athlete.id);
-    const response: Athlete[] = [];
-
-    if (!athlete || !athlete.id) {
-      const newAthlete = {
-        id: tokenData.data.athlete.id,
-        name:
-          tokenData.data.athlete.firstname +
-          ' ' +
-          tokenData.data.athlete.lastname,
-        strava: tokenData.data,
-      };
-
-      response.push(await athleteRepo.insert(newAthlete));
+    
+    const body = JSON.parse(event.body || '{}');
+    
+    if (!body?.code){
+      throw new DefaultError(
+        'Missing code',
+        ErrorCode.InvalidInput,
+        400,
+        undefined,
+        ['Missing code for login'],
+      );
     }
+    
+    const loginUserOnStrava = makeLoginUserOnStravaUseCase();
 
     return {
       statusCode: 201,
-      body:  JSON.stringify({
-        att: athlete?.strava?.athlete,
-        created: athlete,
-        token: makeGenerateJwtUseCase().execute(athlete?.id || ''),
-      }),
+      body:  JSON.stringify(
+        loginUserOnStrava.execute(body.code)
+      )
     };
   } catch (e) {
+    if(e instanceof DefaultError){
+      return e.response();
+    }
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: 'error',
-        stack: e.stack,
+        message: 'error'
       }),
     };
   }

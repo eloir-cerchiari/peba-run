@@ -36,3 +36,7 @@ export class AthleteRepository {
     return {} as Athlete;
   }
 }
+
+export function makeAthleteRepository(): AthleteRepository {
+  return new AthleteRepository();
+}
