@@ -6,7 +6,7 @@ import { LocalStorageRepo } from '../repository/local-storage-repo';
 import {
   ILogService,
   makeLogService,
-} from '@peba-run/ws/src/service/log-service';
+} from '../../../../ws/src/service/log-service';
 import { environment } from 'src/environments/environment';
 
 export class LoginOnWSUseCase {
@@ -21,7 +21,7 @@ export class LoginOnWSUseCase {
         .post<{
           athlete: StravaAthlete;
           token: string;
-        }>(environment.apiUrl, { code: code })
+        }>(environment.apiUrl + '/auth-user', { code: code })
         .pipe(
           catchError((err) => {
             return throwError(
