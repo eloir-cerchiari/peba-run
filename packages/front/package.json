@@ -19,7 +19,8 @@
     "@angular/router": "^15.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.12.0",
+    "@peba-run/ws": "*"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.1.2",

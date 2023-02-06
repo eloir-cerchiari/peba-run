@@ -7,3 +7,4 @@
 /libpeerconnection.log
 testem.log
 /typings
+/dist

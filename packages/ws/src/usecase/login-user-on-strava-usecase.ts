@@ -27,11 +27,11 @@ export class LoginUserOnStravaUseCase extends GenericUseCase {
   }
 
   async execute(userCode: string): Promise<
-  {
-    
-    athlete: StravaAthlete,
-    token: string,
-  }
+    {
+      
+      athlete: StravaAthlete,
+      token: string,
+    }
   > {
     this.logService.trace(`Logging user with code ${userCode} on Strava`);
     
