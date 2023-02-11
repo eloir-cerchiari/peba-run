@@ -16,41 +16,35 @@ require('dotenv').config();
 export async function handle(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  
-  
   try {
-    
     const body = JSON.parse(event.body || '{}');
-    
-    if (!body?.code){
+
+    if (!body?.code) {
       throw new DefaultError(
         'Missing code',
         ErrorCode.InvalidInput,
         400,
         undefined,
-        ['Missing code for login'],
+        ['Missing code for login']
       );
     }
-    
+
     const loginUserOnStrava = makeLoginUserOnStravaUseCase();
-    const loginResponse = await loginUserOnStrava.execute(body.code)
+    const loginResponse = await loginUserOnStrava.execute(body.code);
 
     const response = {
       statusCode: 201,
-      body:  JSON.stringify(
-        loginResponse
-      )
+      body: JSON.stringify(loginResponse),
     };
-    console.log(response);
     return response;
   } catch (e) {
-    if(e instanceof DefaultError){
+    if (e instanceof DefaultError) {
       return e.response();
     }
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: 'error'
+        message: 'error',
       }),
     };
   }

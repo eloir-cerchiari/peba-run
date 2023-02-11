@@ -26,17 +26,13 @@ export class LoginUserOnStravaUseCase extends GenericUseCase {
     super(logService);
   }
 
-  async execute(userCode: string): Promise<
-    {
-      
-      athlete: StravaAthlete,
-      token: string,
-    }
-  > {
+  async execute(userCode: string): Promise<{
+    athlete: StravaAthlete;
+    token: string;
+  }> {
     this.logService.trace(`Logging user with code ${userCode} on Strava`);
-    
+
     try {
-      
       const stravaAuthResult = await this.stravaService.authUser(userCode);
 
       this.logService.debug(`Logged user with code ${userCode} on Strava`);
@@ -54,19 +50,22 @@ export class LoginUserOnStravaUseCase extends GenericUseCase {
             stravaAuthResult.athlete.lastname,
           strava: stravaAuthResult,
         };
+
         this.logService.debug(`Creating new athlete ${newAthlete.id}`);
+
         await this.athleteRepo.insert(newAthlete);
       }
 
       const token = await this.generateJwtUseCase.execute(
         `${stravaAuthResult.athlete.id}`
       );
-      const response =  {
-        athlete:  stravaAuthResult.athlete,
-        token: token,
-      }
-      return response;
 
+      const response = {
+        athlete: stravaAuthResult.athlete,
+        token: token,
+      };
+
+      return response;
     } catch (e) {
       if (e instanceof UseCaseError) throw e;
       throw this.error({

@@ -1,6 +1,6 @@
 import { ErrorCode } from '../error/error-code';
 import { UseCaseError } from '../error/usecase-error';
-import { JwtService, makeJwtService } from '../service/jw-service';
+import { JwtService, makeJwtService } from '../service/jwt-service';
 import { ILogService, makeLogService } from '../service/log-service';
 import { GenericUseCase } from './generic-usecase';
 
