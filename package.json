@@ -7,8 +7,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "jsonwebtoken": "^9.0.0",
-    "@peba-run/ws": "*"
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "typescript": "^4.9.4"
