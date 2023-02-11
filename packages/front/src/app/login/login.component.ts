@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -7,7 +8,14 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  ngOnInit(): void {}
+  constructor(private route: ActivatedRoute) {}
+  public hasError = false;
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      console.log(params);
+      if (params['error']) this.hasError = true;
+    });
+  }
 
   loginStrava() {
     const url =

@@ -6,13 +6,13 @@ import { LoggedComponent } from './logged/logged.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login/:error', component: LoginComponent },
   { path: 'logged', component: LoggedComponent },
   { path: 'access-denied', component: AccessDeniedComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
