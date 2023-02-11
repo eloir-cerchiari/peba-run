@@ -8,6 +8,8 @@ import {
   makeLogService,
 } from '../../../../ws/src/service/log-service';
 import { environment } from 'src/environments/environment';
+import { ErrorCode } from '../../../../ws/src/error/error-code';
+import { FrontError } from '../error/front-error';
 
 export class LoginOnWSUseCase {
   constructor(
@@ -24,8 +26,21 @@ export class LoginOnWSUseCase {
         }>(environment.apiUrl + '/auth-user', { code: code })
         .pipe(
           catchError((err) => {
+            if (err.error.code == ErrorCode.AuthenticationOnStrava) {
+              return throwError(
+                () =>
+                  new FrontError(
+                    ErrorCode.AuthenticationOnStrava,
+                    'Authentication on Strava failed'
+                  )
+              );
+            }
             return throwError(
-              () => new Error('Something bad happened; please try again later.')
+              () =>
+                new FrontError(
+                  ErrorCode.Authentication,
+                  'Something bad happened; please try again later.'
+                )
             );
           })
         )

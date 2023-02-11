@@ -70,7 +70,7 @@ export class LoginUserOnStravaUseCase extends GenericUseCase {
       if (e instanceof UseCaseError) throw e;
       throw this.error({
         userMessage: 'Error logging user on Strava',
-        code: ErrorCode.LoginUserOnStrava,
+        code: e.code || ErrorCode.LoginUserOnStrava,
         status: 500,
         stack: e.stack,
         technicalMessage: [e.message],
