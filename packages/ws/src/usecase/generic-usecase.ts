@@ -1,23 +1,22 @@
-
 import { UseCaseError } from '../error/usecase-error';
 import { ILogService } from '../service/log-service';
 
 export class GenericUseCase {
   constructor(protected logService: ILogService) {}
 
-  async error(error: {
+  error(error: {
     userMessage: string;
     code: number;
     status: number;
     stack?: string;
     technicalMessage?: string[];
-  }): Promise<void> {
+  }): void {
     this.logService.error(
-      `Code: ${error.code}
-Message: ${error.userMessage}
-Status: ${error.status}
-Stack: ${error.stack}
-TechnicalMessage: ${JSON.stringify(error.technicalMessage)}`
+      `- Code: ${error.code}\n` +
+        `- Message: ${error.userMessage}` +
+        `\n- Status: ${error.status}` +
+        `\n- Stack: ${error.stack}` +
+        `\n- TechnicalMessage: ${JSON.stringify(error.technicalMessage)}`
     );
 
     throw new UseCaseError(
