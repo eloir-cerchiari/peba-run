@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LoggedComponent } from './logged/logged.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     LoggedComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

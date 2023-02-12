@@ -51,6 +51,7 @@ export class LoggedComponent implements OnInit {
 
     try {
       const athlete = await loginUseCase.execute(code);
+      this.accessOK();
     } catch (error) {
       if (
         error instanceof FrontError &&
@@ -66,5 +67,9 @@ export class LoggedComponent implements OnInit {
   // redirect to route access-denied
   public accessDenied() {
     this.router.navigate(['/login/access-denied']);
+  }
+
+  public accessOK() {
+    this.router.navigate(['/profile']);
   }
 }

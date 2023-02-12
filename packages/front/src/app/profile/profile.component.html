@@ -1,0 +1,15 @@
+<!-- show strava athlete profile in angular template -->
+
+<div>
+	<h1>Profile</h1>
+	<div *ngIf="athlete">
+		<div>
+		<img [src]="athlete.profile_medium" />
+		</div>
+		<div>
+		<h2>{{athlete.firstname}} {{athlete.lastname}}</h2>
+		<p>{{athlete.city}}, {{athlete.country}}</p>
+		</div>
+	</div>
+
+</div>

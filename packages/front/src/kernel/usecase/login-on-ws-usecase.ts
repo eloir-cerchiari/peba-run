@@ -10,46 +10,23 @@ import {
 import { environment } from 'src/environments/environment';
 import { ErrorCode } from '../../../../ws/src/error/error-code';
 import { FrontError } from '../error/front-error';
+import { makeWSService, WSService } from '../service/ws-service';
 
 export class LoginOnWSUseCase {
   constructor(
     private logService: ILogService,
     private http: HttpClient,
-    private localStorageRepo: LocalStorageRepo
+    private localStorageRepo: LocalStorageRepo,
+    private wsService: WSService
   ) {}
   async execute(code: string) {
-    const response = await lastValueFrom(
-      this.http
-        .post<{
-          athlete: StravaAthlete;
-          token: string;
-        }>(environment.apiUrl + '/auth-user', { code: code })
-        .pipe(
-          catchError((err) => {
-            if (err.error.code == ErrorCode.AuthenticationOnStrava) {
-              return throwError(
-                () =>
-                  new FrontError(
-                    ErrorCode.AuthenticationOnStrava,
-                    'Authentication on Strava failed'
-                  )
-              );
-            }
-            return throwError(
-              () =>
-                new FrontError(
-                  ErrorCode.Authentication,
-                  'Something bad happened; please try again later.'
-                )
-            );
-          })
-        )
-    );
+    const response = await this.wsService.login(code);
     this.logService.info(
       'LoginOnWSUseCase => execute => clear all on local storage'
     );
     this.localStorageRepo.clearAll();
     this.localStorageRepo.insert('token', response.token);
+    this.localStorageRepo.insert('athlete', JSON.stringify(response.athlete));
 
     return response.athlete;
   }
@@ -60,5 +37,10 @@ export function makeLoginOnWSUseCase(
   localStorageRepo: LocalStorageRepo
 ) {
   const logService = makeLogService();
-  return new LoginOnWSUseCase(logService, httpClient, localStorageRepo);
+  return new LoginOnWSUseCase(
+    logService,
+    httpClient,
+    localStorageRepo,
+    makeWSService(httpClient)
+  );
 }
